@@ -6,15 +6,20 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { getPageUser } from "../users/userSlice";
 
+/*
+ * UserPage this component render particular user's page with information
+ *
+ */
+
 const UserPage = () => {
   const params = useParams();
   const id = params.id;
   const users = useSelector((state) => state.userData);
   const dispatch = useDispatch();
+
+  //calls for the state reducer function to find user data by id
   useEffect(() => {
-    console.log("uf");
     dispatch(getPageUser({ id: id }));
-    console.log(users.pageUser);
   }, [params.id]);
 
   return (
@@ -29,7 +34,7 @@ const UserPage = () => {
                   (users.pageUser && users.pageUser.avatar) ||
                   "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                 }
-                style={{ width: "290px" }}
+                style={{ width: "30vw" }}
               />
               <Card.Body>
                 <Card.Title>

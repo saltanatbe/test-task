@@ -7,13 +7,13 @@ import React from "react";
 import { setCredentials } from "../users/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 
-require("react-dom");
-window.React2 = require("react");
-console.log(window.React1 === window.React2);
-
+/**
+ * Registration page renders a page with registration for the user
+ * that has form with validation schema with yup.
+ * Enables user to go to the authorization page if needed
+ * when successfully registered enable to the destinate url and saves user
+ */
 const Registration = () => {
-  // const users = useSelector((state) => state.userData);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const formik = useFormik({
@@ -29,8 +29,8 @@ const Registration = () => {
       email: yup.string().email("Invalid email").required("required"),
       password: yup.string().required("required"),
     }),
+    //when form submitted sets the logged in user data in the redux state
     onSubmit: (values, actions) => {
-      console.log("submit");
       dispatch(
         setCredentials({
           id: new Date().getTime(),
@@ -42,14 +42,13 @@ const Registration = () => {
       actions.setSubmitting(false);
       actions.resetForm({
         values: {
-          // the type of `values` inferred to be Blog
           first_name: "",
           last_name: "",
           email: "",
           password: "",
         },
-        // you can also set the other form states here
       });
+      //when form submitted navigates to destination
       navigate("/");
     },
   });
@@ -110,7 +109,7 @@ const Registration = () => {
 };
 
 const RegistrationBox = styled.div`
-  margin: 5vh 33% 0;
+  margin: 10vh 33% 0;
   background-color: #e8bcf0;
   padding: 40px;
   border-radius: 5%;

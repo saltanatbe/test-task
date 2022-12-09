@@ -7,6 +7,12 @@ import React from "react";
 import { checkCredentials } from "../users/userSlice";
 import { useNavigate, Link } from "react-router-dom";
 
+/**
+ * Authorization page renders a page with authorization for the user
+ * that has form with validation schema with yup.
+ * Enables user to go to the registration page if needed
+ *
+ */
 const Authorization = () => {
   const users = useSelector((state) => state.userData);
   const navigate = useNavigate();
@@ -21,22 +27,21 @@ const Authorization = () => {
       email: yup.string().email("Invalid email").required("required"),
       password: yup.string().required("required"),
     }),
+    //on submit it checks the email data if it exists in the redux state
     onSubmit: (values, actions) => {
-      console.log(values);
       dispatch(
-        // { type: "auth", payload: { email: values.email } }
         checkCredentials({
           email: values.email,
         })
       );
 
-      //   alert(JSON.stringify(values, null, 2));
       actions.setSubmitting(false);
-      console.log(users.loggedInUser);
+      //when the state variable loggedInUser is set
+      //navigates to the page from the link
       if (users.loggedInUser != null) {
         navigate("/");
       } else {
-        alert(JSON.stringify("feew", null, 2));
+        // alert(JSON.stringify("feew", null, 2));
       }
     },
   });
@@ -100,7 +105,7 @@ const Authorization = () => {
 };
 
 const RegistrationBox = styled.div`
-  margin: 7vh 33% 0;
+  margin: 20vh 33% 0;
   background-color: #e8bcf0;
   padding: 40px;
   border-radius: 5%;

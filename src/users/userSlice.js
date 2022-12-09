@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+/**
+ * UserSlice is the slice of the redux state with initial values and reducer functions
+ */
+
 const initialState = {
   users: [],
   loggedInUser: null,
@@ -9,6 +13,8 @@ const initialState = {
   pageUser: null,
 };
 
+// this function initializes the users list by getting value from the api
+//it is asynchronious therefore used createAsyncThunk
 export const initialize = createAsyncThunk("initialize", async () => {
   const api = await fetch(`https://reqres.in/api/users?page=2`);
   const users = await api.json();
@@ -20,41 +26,39 @@ export const userSlice = createSlice({
   name: "userData",
   initialState,
   reducers: {
+    //sets data when the user registers
     setCredentials: (state, action) => {
       const temp = action.payload;
       state.users = [...state.users, temp];
       state.loggedInUser = temp;
     },
+    //logouts
     logOut: (state) => {
       state.loggedInUser = null;
     },
-
+    //checks the credentials when user authorizes
     checkCredentials: (state, action) => {
       const login = action.payload;
 
       for (let i = 0; i < state.users.length; i++) {
         if (state.users[i].email === login.email) {
-          console.log("yes ");
           state.loggedInUser = state.users[i];
-          console.log(state);
         }
       }
     },
+    //gets the user by id
     getPageUser: (state, action) => {
       const data = action.payload;
-      console.log(data.id);
 
       for (let i = 0; i < state.users.length; i++) {
-        console.log(state.users[i].id);
-        console.log(state.users[i].id == data);
-
         if (state.users[i].id == data.id) {
           state.pageUser = state.users[i];
-          console.log(state.pageUser);
         }
       }
     },
   },
+  //extra reducers for the initialize function
+  //to monitor its state and accordingly change values
   extraReducers: {
     [initialize.pending]: (state, action) => {
       state.loading = true;

@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../users/userSlice";
 
+/**
+ * Header component is the header of the pages: Home, User page and 404 not found page
+ */
 const Header = () => {
   const user = useSelector((state) => state.userData.loggedInUser);
   const dispatch = useDispatch();
@@ -19,12 +22,20 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link as={Link} to={"/user/" + user.id}>
-                {user.first_name + " " + user.last_name}
-              </Nav.Link>
-              <Nav.Link as={Link} onClick={() => dispatch(logOut())} to="/auth">
-                Log Out
-              </Nav.Link>
+              {!!user && (
+                <Nav.Link as={Link} to={"/user/" + user.id}>
+                  {user.first_name + " " + user.last_name}
+                </Nav.Link>
+              )}
+              {!!user && (
+                <Nav.Link
+                  as={Link}
+                  onClick={() => dispatch(logOut())}
+                  to="/auth"
+                >
+                  Log Out
+                </Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -8,11 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { initialize } from "./users/userSlice";
 import { useEffect } from "react";
 
-// import Profile from "./components/profile";
-
+/**
+ * App component renders as a main page and acts as a router to change between pages
+ *
+ */
 function App() {
   const users = useSelector((state) => state.userData);
   const dispatch = useDispatch();
+  //loads the users list in the redux state from the api
   useEffect(() => {
     if (users.loading !== false) {
       dispatch(initialize());
@@ -34,7 +37,6 @@ function App() {
           }
         />
         <Route path="*" element={<NotFound />} />
-        <Route path="/test" element={<Home />} />
       </Routes>
     </div>
   );

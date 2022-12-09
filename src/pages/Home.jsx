@@ -2,12 +2,18 @@ import Header from "../components/Header";
 import Table from "react-bootstrap/Table";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-// import { getPageUser, initialize } from "../users/userSlice";
 
+/**
+ * Home component renders a home page with users table with all information and icons
+ *
+ */
 const Home = () => {
   const u = useSelector((state) => state.userData);
   const users = u.users;
   const rows = [];
+
+  //creates a table variable rows with table row tags in it
+  //for every user to later put it in the table
   for (let i = 0; i < users.length; i++) {
     rows.push(
       <tr>
