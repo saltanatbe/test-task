@@ -1,15 +1,11 @@
-import { Button, TextField, Link } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { Formik, useFormik } from "formik";
 import * as yup from "yup";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
-import {
-  setCredentials,
-  selectusers,
-  checkCredentials,
-} from "../users/userSlice";
-import { useNavigate } from "react-router-dom";
+import { checkCredentials } from "../users/userSlice";
+import { useNavigate, Link } from "react-router-dom";
 
 const Authorization = () => {
   const users = useSelector((state) => state.userData);
@@ -18,32 +14,29 @@ const Authorization = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "e",
-      password: "e",
+      email: "michael.lawson@reqres.in",
+      password: "12345",
     },
     validationSchema: yup.object().shape({
-      username: yup.string().required("required"),
+      email: yup.string().email("Invalid email").required("required"),
       password: yup.string().required("required"),
     }),
     onSubmit: (values, actions) => {
+      console.log(values);
       dispatch(
+        // { type: "auth", payload: { email: values.email } }
         checkCredentials({
-          username: values.username,
-          password: values.password,
+          email: values.email,
         })
       );
 
-      alert(JSON.stringify(values, null, 2));
+      //   alert(JSON.stringify(values, null, 2));
       actions.setSubmitting(false);
-      actions.resetForm({
-        values: {
-          username: "",
-          password: "",
-        },
-        // you can also set the other form states here
-      });
+      console.log(users.loggedInUser);
       if (users.loggedInUser != null) {
         navigate("/");
+      } else {
+        alert(JSON.stringify("feew", null, 2));
       }
     },
   });
@@ -58,7 +51,7 @@ const Authorization = () => {
       >
         <form onSubmit={formik.handleSubmit}>
           <RegistrationForm>
-            {Object.keys(formik.initialValues).map((key, index) => {
+            {Object.keys(formik.initialValues).map((key) => {
               return (
                 <TextField
                   fullWidth
@@ -74,7 +67,7 @@ const Authorization = () => {
                   sx={{
                     backgroundColor: "white",
                     // borderRadius: "5%",
-                    gridColumn: "span 4",
+                    gridColumn: "span",
                     fontSize: "20px",
                   }}
                   InputProps={{
@@ -90,14 +83,15 @@ const Authorization = () => {
               type="submit"
               color="secondary"
               variant="contained"
-              sx={{ width: "100%", p: "15px", gridColumn: "span 4" }}
+              sx={{ width: "100%", p: "15px", gridColumn: "" }}
             >
               Log in
             </Button>
-            <p>
-              Don't have an account?{" "}
-              <button onClick={() => navigate("/registr")}>Register</button>
-            </p>
+
+            <Text>
+              Don't have an account?
+              <Link to="/registr">Register</Link>
+            </Text>
           </RegistrationForm>
         </form>
       </Formik>
@@ -106,7 +100,7 @@ const Authorization = () => {
 };
 
 const RegistrationBox = styled.div`
-  margin: 10vh 33% 0;
+  margin: 7vh 33% 0;
   background-color: #e8bcf0;
   padding: 40px;
   border-radius: 5%;
@@ -115,10 +109,10 @@ const RegistrationBox = styled.div`
 const RegistrationForm = styled.div`
   display: grid;
   gap: 30px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
 
   "& > div": {
-    gridcolumn: "span 4";
+    grid-column: "span";
   }
 `;
 
@@ -128,6 +122,12 @@ const Header = styled.div`
   display: flex;
   justify-content: center;
   margin: 0 0 20px;
+`;
+
+const Text = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 5px;
 `;
 
 export default Authorization;

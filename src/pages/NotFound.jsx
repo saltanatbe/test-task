@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { Box } from "@mui/material";
+import Header from "../components/Header";
 
 const NotFound = () => {
   return (
     <Box>
+      <Header />;
       <Content>
         <h1>404 NOT FOUND</h1>
         <p>this page does not exist</p>
